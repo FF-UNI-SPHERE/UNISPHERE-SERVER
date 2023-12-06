@@ -41,12 +41,12 @@ public class MemberUpdateValidator implements
 
 	private boolean validateAvatarImageUrl(MyAvatarUpdateRequestDto value,
 			ConstraintValidatorContext context) {
-		if (value.getPreSignedAvatarImageUrl() == null
-				|| value.getPreSignedAvatarImageUrl().isEmpty()) {
+		if (value.getTemplateAvatarImageUrl() == null
+				|| value.getTemplateAvatarImageUrl().isEmpty()) {
 			return true;
 		}
 
-		String[] split = value.getPreSignedAvatarImageUrl().split("\\.");
+		String[] split = value.getTemplateAvatarImageUrl().split("\\.");
 		String imageType = split[split.length - 1];
 		if (!ALLOWED_IMAGE_TYPES.contains(imageType)) {
 			context.buildConstraintViolationWithTemplate("이미지는 " + ALLOWED_IMAGE_TYPES

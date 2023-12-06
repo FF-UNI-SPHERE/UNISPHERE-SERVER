@@ -43,10 +43,11 @@ public class MemberService {
 				.orElseThrow(() -> new HttpClientErrorException(
 						HttpStatus.NOT_FOUND,
 						"memberId = " + memberId + " 에 해당하는 회원이 존재하지 않습니다."));
-		String imageUrl = imageService.getImageUrl(
-				myAvatarUpdateRequestDto.getPreSignedAvatarImageUrl());
+//      NOTE: 이미지 업로드를 PreSigned가 아닌 미리 약속한 템플릿 이미지 URL 전체 주소를 입력하도록 합니다.
+//		String imageUrl = imageService.getImageUrl(
+//				myAvatarUpdateRequestDto.getPreSignedAvatarImageUrl());
 		member.updateAvatar(myAvatarUpdateRequestDto.getNickname(),
-				imageUrl);
+				myAvatarUpdateRequestDto.getTemplateAvatarImageUrl());
 		memberRepository.save(member);
 		return memberMapper.toMyAvatarResponseDto(member);
 	}
