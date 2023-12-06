@@ -44,6 +44,13 @@ public class ImageService {
 		return awsS3Manager.getPreSignedUrl(imageUrl);
 	}
 
+	public String getImageUrl(String imageUrl) {
+		if (Objects.isNull(imageUrl) || imageUrl.isBlank()) {
+			return null;
+		}
+		return awsS3Manager.getObjectUrl(imageUrl);
+	}
+
 	private List<String> getValidDirNameList() {
 		return List.of(ARTICLE_IMAGE_DIR, AVATAR_IMAGE_DIR, LOGO_IMAGE_DIR);
 	}

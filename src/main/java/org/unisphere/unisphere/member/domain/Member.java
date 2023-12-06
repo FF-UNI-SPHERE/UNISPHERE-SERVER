@@ -85,4 +85,13 @@ public class Member {
 		member.isFirstLogin = true;
 		return member;
 	}
+
+	public void updateAvatar(String nickname, String preSignedAvatarImageUrl) {
+		if (nickname != null) {
+			this.nickname = nickname;
+		}
+		if (preSignedAvatarImageUrl != null) {
+			this.avatarImageUrl = preSignedAvatarImageUrl;
+		}
+	}
 }

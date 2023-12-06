@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.annotation.Secured;
@@ -41,7 +42,7 @@ public class MemberController {
 			@LoginMemberInfo MemberSessionDto memberSessionDto
 	) {
 		log.info("Called getMyAvatar member: {}", memberSessionDto);
-		return MyAvatarResponseDto.builder().build();
+		return memberService.getMemberAvatar(memberSessionDto.getMemberId());
 	}
 
 	// 내 아바타 편집
@@ -54,11 +55,12 @@ public class MemberController {
 	@Secured(MemberRole.S_USER)
 	public MyAvatarResponseDto updateAvatar(
 			@LoginMemberInfo MemberSessionDto memberSessionDto,
-			@RequestBody MyAvatarUpdateRequestDto myAvatarUpdateRequestDto
+			@Valid @RequestBody MyAvatarUpdateRequestDto myAvatarUpdateRequestDto
 	) {
 		log.info("Called updateAvatar member: {}, avatarUpdateRequestDto: {}", memberSessionDto,
 				myAvatarUpdateRequestDto);
-		return MyAvatarResponseDto.builder().build();
+		return memberService.updateMemberAvatar(memberSessionDto.getMemberId(),
+				myAvatarUpdateRequestDto);
 	}
 
 	// 특정 회원 아바타 정보 조회

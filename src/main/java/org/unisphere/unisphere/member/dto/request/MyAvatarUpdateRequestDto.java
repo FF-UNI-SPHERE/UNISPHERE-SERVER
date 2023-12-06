@@ -16,6 +16,6 @@ public class MyAvatarUpdateRequestDto {
 	@Schema(description = "닉네임", example = "테스트", nullable = true)
 	private final String nickname;
 
-	@Schema(description = "pre-signed 아바타 이미지 URL", example = "avatar-images/random-string/image.png", nullable = true)
-	private final String preSignedAvatarImageUrl;
+	@Schema(description = "template 아바타 이미지 URL", example = "https://unisphere-main-image.s3.ap-northeast-2.amazonaws.com/avatar-images/random-string/avatar.png", nullable = true)
+	private final String templateAvatarImageUrl;
 }
