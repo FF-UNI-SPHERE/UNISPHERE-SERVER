@@ -88,6 +88,23 @@ unisphere:
   jwt:
     common-token-expire-time: 604800000
     refresh-token-expire-time: 2592000000
+  images:
+    path:
+      article: article-images/
+      avatar: avatar-images/
+      logo: logo-images/
 
 swagger:
   base-url: http://localhost
+
+cloud:
+  aws:
+    s3:
+      bucket: test-bucket
+    credentials:
+      access-key: AKIAJQBLABLABLA
+      secret-key: 1QBLABLABLA
+    region:
+      static: ap-northeast-2
+    stack:
+      auto: false

@@ -7,6 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class UnisphereApplication {
 
 	public static void main(String[] args) {
+		System.setProperty("com.amazonaws.sdk.disableEc2Metadata", "true");
 		SpringApplication.run(UnisphereApplication.class, args);
 	}
 
