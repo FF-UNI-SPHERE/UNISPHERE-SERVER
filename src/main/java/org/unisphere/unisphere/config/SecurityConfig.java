@@ -1,6 +1,8 @@
 package org.unisphere.unisphere.config;
 
+import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -34,6 +36,8 @@ public class SecurityConfig {
 	private final AuthenticationEntryPoint jwtAuthenticationEntryPoint;
 	private final AuthenticationSuccessHandler oauth2AuthenticationSuccessHandler;
 	private final AuthenticationFailureHandler oauth2AuthenticationFailureHandler;
+	@Value("${swagger.base-url}")
+	private String baseUrl;
 
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
@@ -75,8 +79,8 @@ public class SecurityConfig {
 	public CorsConfigurationSource corsConfigurationSource() {
 		CorsConfiguration configuration = new CorsConfiguration();
 
-		configuration.addAllowedOrigin(clientConfig.getClientUrl());
-		configuration.addAllowedOrigin(clientConfig.getClientHttpUrl());
+		configuration.setAllowedOrigins(
+				List.of(clientConfig.getClientUrl(), clientConfig.getClientHttpUrl(), baseUrl));
 		configuration.addAllowedHeader("*");
 		configuration.addAllowedMethod("*");
 		configuration.setAllowCredentials(true);

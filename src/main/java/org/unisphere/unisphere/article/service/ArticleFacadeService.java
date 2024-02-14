@@ -10,7 +10,7 @@ import org.unisphere.unisphere.article.infrastructure.ArticleRepository;
 @RequiredArgsConstructor
 @Slf4j
 @Transactional
-public class ArticleService {
+public class ArticleFacadeService {
 
 	private final ArticleRepository articleRepository;
 }

@@ -5,14 +5,14 @@ import com.amazonaws.HttpMethod;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.GeneratePresignedUrlRequest;
 import java.util.Date;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
-import org.springframework.web.client.HttpClientErrorException;
+import org.unisphere.unisphere.annotation.Logging;
+import org.unisphere.unisphere.exception.ExceptionStatus;
+import org.unisphere.unisphere.log.LogLevel;
 
 @Component
-@Slf4j
+@Logging(level = LogLevel.DEBUG)
 public class AwsS3Manager {
 
 	private final String bucketName;
@@ -26,30 +26,23 @@ public class AwsS3Manager {
 	}
 
 	public void delete(String key) {
-		log.info("deleting file from s3: {}", key);
 		try {
 			amazonS3Client.deleteObject(bucketName, key);
 		} catch (Exception e) {
-			log.error("s3 delete error: {}", e.getMessage());
-			throw new HttpClientErrorException(HttpStatus.BAD_REQUEST,
-					"이미지 삭제에 실패했습니다. 다시 시도해주세요.");
+			throw ExceptionStatus.FAILED_TO_DELETE_IMAGE.toDomainException();
 		}
 	}
 
 	public String getObjectUrl(String key) {
 		if (!doesObjectExist(key)) {
-			throw new HttpClientErrorException(HttpStatus.BAD_REQUEST,
-					"이미지가 존재하지 않습니다.");
+			throw ExceptionStatus.NOT_FOUND_IMAGE.toDomainException();
 		}
 		return amazonS3Client.getUrl(bucketName, key).toString();
 	}
 
 	public String getPreSignedUrl(String objectKey) {
-		log.info("getPreSignedUrl objectKey: {}", objectKey);
 		GeneratePresignedUrlRequest request = createPreSignedUrlRequest(objectKey);
-		String preSignedUrl = amazonS3Client.generatePresignedUrl(request).toString();
-		log.info("preSignedUrl: {}", preSignedUrl);
-		return preSignedUrl;
+		return amazonS3Client.generatePresignedUrl(request).toString();
 	}
 
 	public boolean doesObjectExist(String objectKey) {

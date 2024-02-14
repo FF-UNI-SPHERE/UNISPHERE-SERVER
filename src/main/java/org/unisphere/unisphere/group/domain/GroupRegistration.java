@@ -38,4 +38,15 @@ public class GroupRegistration {
 
 	@Column(nullable = true)
 	private LocalDateTime registeredAt;
+
+	public static GroupRegistration of(LocalDateTime now, Member ownerMember, Group group) {
+		GroupRegistration groupRegistration = new GroupRegistration();
+		groupRegistration.id = new GroupRegistrationCompositeKey(ownerMember.getId(),
+				group.getId());
+		groupRegistration.member = ownerMember;
+		groupRegistration.group = group;
+		groupRegistration.role = GroupRole.OWNER;
+		groupRegistration.registeredAt = now;
+		return groupRegistration;
+	}
 }

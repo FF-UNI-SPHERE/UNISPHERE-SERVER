@@ -20,5 +20,5 @@ public class GroupMemberListResponseDto {
 	private final List<GroupMemberDto> groupMembers;
 
 	@Schema(description = "전체 회원 수", example = "100")
-	private final int totalMemberCount;
+	private final long totalMemberCount;
 }

@@ -5,7 +5,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -19,22 +18,23 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import org.unisphere.unisphere.annotation.Logging;
 import org.unisphere.unisphere.annotation.LoginMemberInfo;
 import org.unisphere.unisphere.article.dto.request.ArticleSubmissionRequestDto;
 import org.unisphere.unisphere.article.dto.response.ArticleDetailResponseDto;
 import org.unisphere.unisphere.article.dto.response.ArticleListResponseDto;
-import org.unisphere.unisphere.article.service.ArticleService;
+import org.unisphere.unisphere.article.service.ArticleFacadeService;
 import org.unisphere.unisphere.auth.domain.MemberRole;
 import org.unisphere.unisphere.auth.dto.MemberSessionDto;
 
 @RestController
 @RequiredArgsConstructor
-@Slf4j
+@Logging
 @RequestMapping("/api/v1/articles")
 @Tag(name = "소식지 (Article)", description = "소식지 관련 API")
 public class ArticleController {
 
-	private final ArticleService articleService;
+	private final ArticleFacadeService articleFacadeService;
 
 	// 개인 이름으로 소식지 투고
 	// POST /api/v1/articles/members/me
@@ -49,8 +49,6 @@ public class ArticleController {
 			@LoginMemberInfo MemberSessionDto memberSessionDto,
 			@RequestBody ArticleSubmissionRequestDto articleSubmissionRequestDto
 	) {
-		log.info("submitArticle() memberSessionDto: {}, articleSubmissionDto: {}", memberSessionDto,
-				articleSubmissionRequestDto);
 	}
 
 	// 단체 이름으로 소식지 투고
@@ -67,9 +65,6 @@ public class ArticleController {
 			@PathVariable("groupId") Long groupId,
 			@RequestBody ArticleSubmissionRequestDto articleSubmissionRequestDto
 	) {
-		log.info("submitArticle() memberSessionDto: {}, groupId: {}, articleSubmissionDto: {}",
-				memberSessionDto,
-				groupId, articleSubmissionRequestDto);
 	}
 
 	// 소식지 투고 승인
@@ -84,8 +79,6 @@ public class ArticleController {
 			@LoginMemberInfo MemberSessionDto memberSessionDto,
 			@PathVariable("articleId") Long articleId
 	) {
-		log.info("acceptArticle() memberSessionDto: {}, articleId : {}",
-				memberSessionDto, articleId);
 	}
 
 	// 소식지 편집
@@ -101,9 +94,6 @@ public class ArticleController {
 			@PathVariable("articleId") Long articleId,
 			@RequestBody ArticleSubmissionRequestDto articleSubmissionRequestDto
 	) {
-		log.info("updateArticle() memberSessionDto: {}, articleId: {}, articleSubmissionDto: {}",
-				memberSessionDto,
-				articleId, articleSubmissionRequestDto);
 	}
 
 	// 소식지 삭제
@@ -119,8 +109,6 @@ public class ArticleController {
 			@LoginMemberInfo MemberSessionDto memberSessionDto,
 			@PathVariable("articleId") Long articleId
 	) {
-		log.info("deleteArticle() memberSessionDto: {}, articleId: {}", memberSessionDto,
-				articleId);
 	}
 
 	// 소식지 조회
@@ -135,8 +123,6 @@ public class ArticleController {
 			@LoginMemberInfo MemberSessionDto memberSessionDto,
 			@PathVariable("articleId") Long articleId
 	) {
-		log.info("getArticleDetail() memberSessionDto: {}, articleId: {}", memberSessionDto,
-				articleId);
 		return ArticleDetailResponseDto.builder().build();
 	}
 
@@ -153,8 +139,6 @@ public class ArticleController {
 			@RequestParam(value = "page", defaultValue = "0") int page,
 			@RequestParam(value = "size", defaultValue = "10") int size
 	) {
-		log.info("getArticleList() memberSessionDto: {}, page: {}, size: {}", memberSessionDto,
-				page, size);
 		return ArticleListResponseDto.builder().build();
 	}
 
@@ -171,8 +155,6 @@ public class ArticleController {
 			@RequestParam(value = "page", defaultValue = "0") int page,
 			@RequestParam(value = "size", defaultValue = "10") int size
 	) {
-		log.info("getMyArticleList() memberSessionDto: {}, page: {}, size: {}", memberSessionDto,
-				page, size);
 		return ArticleListResponseDto.builder().build();
 	}
 
@@ -190,9 +172,6 @@ public class ArticleController {
 			@RequestParam(value = "page", defaultValue = "0") int page,
 			@RequestParam(value = "size", defaultValue = "10") int size
 	) {
-		log.info("getMemberArticleList() memberSessionDto: {}, memberId: {}, page: {}, size: {}",
-				memberSessionDto,
-				memberId, page, size);
 		return ArticleListResponseDto.builder().build();
 	}
 
@@ -210,9 +189,6 @@ public class ArticleController {
 			@RequestParam(value = "page", defaultValue = "0") int page,
 			@RequestParam(value = "size", defaultValue = "10") int size
 	) {
-		log.info("getGroupArticleList() memberSessionDto: {}, groupId: {}, page: {}, size: {}",
-				memberSessionDto,
-				groupId, page, size);
 		return ArticleListResponseDto.builder().build();
 	}
 
@@ -228,8 +204,6 @@ public class ArticleController {
 			@LoginMemberInfo MemberSessionDto memberSessionDto,
 			@PathVariable("articleId") Long articleId
 	) {
-		log.info("likeArticle() memberSessionDto: {}, articleId: {}", memberSessionDto,
-				articleId);
 	}
 
 	// 관심 소식지 해제
@@ -245,7 +219,5 @@ public class ArticleController {
 			@LoginMemberInfo MemberSessionDto memberSessionDto,
 			@PathVariable("articleId") Long articleId
 	) {
-		log.info("unlikeArticle() memberSessionDto: {}, articleId: {}", memberSessionDto,
-				articleId);
 	}
 }

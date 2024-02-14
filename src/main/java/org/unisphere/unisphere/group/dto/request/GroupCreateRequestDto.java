@@ -5,12 +5,14 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.ToString;
+import org.unisphere.unisphere.group.validation.GroupCreateValidation;
 
 @AllArgsConstructor
 @Getter
 @ToString
 @Builder
 @Schema(description = "그룹 생성 요청")
+@GroupCreateValidation
 public class GroupCreateRequestDto {
 
 	@Schema(description = "그룹명", example = "유니스피어")

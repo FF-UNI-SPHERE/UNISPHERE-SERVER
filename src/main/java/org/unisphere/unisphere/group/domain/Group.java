@@ -10,13 +10,16 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import org.unisphere.unisphere.member.domain.Member;
 
-@Entity(name = "`group`")
+@Entity(name = "group_entity")
 @Getter
 @ToString(callSuper = true)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -56,4 +59,20 @@ public class Group {
 	@ToString.Exclude
 	@OneToMany(mappedBy = "group", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private List<GroupRegistration> groupRegistrations = new ArrayList<>();
+
+	@JoinColumn(name = "ownerMemberId", nullable = false)
+	@ManyToOne(optional = false, fetch = FetchType.LAZY)
+	private Member ownerMember;
+
+	public static Group createGroup(LocalDateTime now, Member member, String name, String summary,
+			String logoImageUrl) {
+		Group group = new Group();
+		group.name = name;
+		group.summary = summary;
+		group.createdAt = now;
+		group.ownerMember = member;
+		group.approvedAt = null;
+		group.logoImageUrl = logoImageUrl;
+		return group;
+	}
 }

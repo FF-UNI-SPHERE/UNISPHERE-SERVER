@@ -22,6 +22,7 @@ import lombok.ToString;
 import org.unisphere.unisphere.article.domain.InterestedArticle;
 import org.unisphere.unisphere.auth.domain.MemberRole;
 import org.unisphere.unisphere.auth.domain.OauthType;
+import org.unisphere.unisphere.group.domain.Group;
 import org.unisphere.unisphere.group.domain.GroupRegistration;
 
 @Entity
@@ -69,6 +70,10 @@ public class Member {
 	@OneToMany(mappedBy = "member", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private List<InterestedArticle> interestedArticles = new ArrayList<>();
 
+	@ToString.Exclude
+	@OneToMany(mappedBy = "ownerMember", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	private final List<Group> managingGroups = new ArrayList<>();
+
 	@Transient
 	private boolean isFirstLogin = false;
 
@@ -84,5 +89,14 @@ public class Member {
 		member.socialMember = SocialMember.of(member, oauthId, oauthType);
 		member.isFirstLogin = true;
 		return member;
+	}
+
+	public void updateAvatar(String nickname, String preSignedAvatarImageUrl) {
+		if (nickname != null) {
+			this.nickname = nickname;
+		}
+		if (preSignedAvatarImageUrl != null) {
+			this.avatarImageUrl = preSignedAvatarImageUrl;
+		}
 	}
 }

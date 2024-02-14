@@ -5,20 +5,20 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import org.unisphere.unisphere.annotation.Logging;
 import org.unisphere.unisphere.annotation.LoginMemberInfo;
 import org.unisphere.unisphere.auth.domain.MemberRole;
 import org.unisphere.unisphere.auth.dto.MemberSessionDto;
 
 @RestController
 @RequiredArgsConstructor
-@Slf4j
+@Logging
 @RequestMapping("/api/v1/auth")
 @Tag(name = "인증", description = "인증 관련 API")
 public class AuthController {
@@ -32,6 +32,5 @@ public class AuthController {
 	@Secured(MemberRole.S_USER)
 	// TODO: 추후 탈퇴 로직 구현 필요
 	public void unregister(@LoginMemberInfo MemberSessionDto memberSessionDto) {
-		log.info("Called unregister member: {}", memberSessionDto);
 	}
 }
