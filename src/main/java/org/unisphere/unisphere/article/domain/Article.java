@@ -17,6 +17,8 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import org.unisphere.unisphere.group.domain.Group;
+import org.unisphere.unisphere.member.domain.Member;
 
 @Entity
 @Getter
@@ -56,4 +58,14 @@ public class Article {
 	@ToString.Exclude
 	@OneToMany(mappedBy = "article", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private List<InterestedArticle> interestedArticles = new ArrayList<>();
+
+	public void setContent(String content){
+		this.content = content;
+	}
+	public void setTitle(String title){
+		this.title = title;
+	}
+	public void setThumbnailImageUrl(String thumbnailImageUrl){
+		this.thumbnailImageUrl = thumbnailImageUrl;
+	}
 }
