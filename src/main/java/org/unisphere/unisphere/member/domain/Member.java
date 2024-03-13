@@ -3,6 +3,7 @@ package org.unisphere.unisphere.member.domain;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -13,7 +14,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Transient;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -21,7 +21,6 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.unisphere.unisphere.article.domain.InterestedArticle;
 import org.unisphere.unisphere.auth.domain.MemberRole;
-import org.unisphere.unisphere.auth.domain.OauthType;
 import org.unisphere.unisphere.group.domain.Group;
 import org.unisphere.unisphere.group.domain.GroupRegistration;
 
@@ -55,14 +54,6 @@ public class Member {
 	private LocalDateTime deletedAt;
 
 	@ToString.Exclude
-	@OneToOne(mappedBy = "member", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	private PasswordMember passwordMember;
-
-	@ToString.Exclude
-	@OneToOne(mappedBy = "member", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	private SocialMember socialMember;
-
-	@ToString.Exclude
 	@OneToMany(mappedBy = "member", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private List<GroupRegistration> groupRegistrations = new ArrayList<>();
 
@@ -77,25 +68,36 @@ public class Member {
 	@Transient
 	private boolean isFirstLogin = false;
 
-	public static Member createSocialMember(
-			String email, String nickname, LocalDateTime now, MemberRole role,
-			String oauthId, OauthType oauthType
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) {
+			return true;
+		}
+		if (o == null || getClass() != o.getClass()) {
+			return false;
+		}
+
+		Member member = (Member) o;
+		return Objects.equals(id, member.id);
+	}
+
+	public static Member of(
+			String email, String nickname, LocalDateTime now, MemberRole role
 	) {
 		Member member = new Member();
 		member.role = role;
 		member.email = email;
 		member.nickname = nickname;
 		member.createdAt = now;
-		member.socialMember = SocialMember.of(member, oauthId, oauthType);
 		member.isFirstLogin = true;
 		return member;
 	}
 
 	public void updateAvatar(String nickname, String preSignedAvatarImageUrl) {
-		if (nickname != null) {
+		if (nickname != null && !nickname.isEmpty()) {
 			this.nickname = nickname;
 		}
-		if (preSignedAvatarImageUrl != null) {
+		if (preSignedAvatarImageUrl != null && !preSignedAvatarImageUrl.isEmpty()) {
 			this.avatarImageUrl = preSignedAvatarImageUrl;
 		}
 	}

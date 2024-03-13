@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.HttpClientErrorException;
 import org.unisphere.unisphere.annotation.Logging;
-import org.unisphere.unisphere.image.domain.AwsS3Manager;
+import org.unisphere.unisphere.image.domain.ObjectStorageManager;
 import org.unisphere.unisphere.log.LogLevel;
 
 @Service
@@ -28,7 +28,7 @@ public class ImageService {
 	private String LOGO_IMAGE_DIR;
 
 	private static final List<String> validImageExtension = List.of(".jpg", ".jpeg", ".png");
-	private final AwsS3Manager awsS3Manager;
+	private final ObjectStorageManager objectStorageManager;
 
 
 	public String getPreSignedUrl(String imageUrl) {
@@ -40,14 +40,25 @@ public class ImageService {
 			throw new HttpClientErrorException(HttpStatus.BAD_REQUEST,
 					imageUrl + "은 유효하지 않은 파일 확장자입니다. (유효한 파일 확장자: " + validImageExtension + ")");
 		}
-		return awsS3Manager.getPreSignedUrl(imageUrl);
+		return objectStorageManager.getPreSignedUrl(imageUrl);
 	}
 
 	public String getImageUrl(String imageUrl) {
 		if (Objects.isNull(imageUrl) || imageUrl.isBlank()) {
 			return null;
 		}
-		return awsS3Manager.getObjectUrl(imageUrl);
+		return objectStorageManager.getObjectUrl(imageUrl);
+	}
+
+	public String findImageUrl(String imageUrl) {
+		if (Objects.isNull(imageUrl) || imageUrl.isBlank()) {
+			return null;
+		}
+		try {
+			return objectStorageManager.getObjectUrl(imageUrl);
+		} catch (Exception e) {
+			return null;
+		}
 	}
 
 	private List<String> getValidDirNameList() {

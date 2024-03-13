@@ -24,7 +24,8 @@ public class MemberFacadeService {
 	@Transactional(readOnly = true)
 	public MyAvatarResponseDto getMemberAvatar(Long memberId) {
 		Member member = memberQueryService.getMember(memberId);
-		return memberMapper.toMyAvatarResponseDto(member);
+		return memberMapper.toMyAvatarResponseDto(member,
+				imageService.findImageUrl(member.getAvatarImageUrl()));
 	}
 
 	@Transactional
@@ -33,7 +34,11 @@ public class MemberFacadeService {
 		Member member = memberQueryService.getMember(memberId);
 		String imageUrl = imageService.getImageUrl(
 				myAvatarUpdateRequestDto.getPreSignedAvatarImageUrl());
-		memberCommandService.updateAvatar(member, myAvatarUpdateRequestDto.getNickname(), imageUrl);
-		return memberMapper.toMyAvatarResponseDto(member);
+		if (imageUrl == null) {
+			imageUrl = imageService.findImageUrl(member.getAvatarImageUrl());
+		}
+		memberCommandService.updateAvatar(member, myAvatarUpdateRequestDto.getNickname(),
+				myAvatarUpdateRequestDto.getPreSignedAvatarImageUrl());
+		return memberMapper.toMyAvatarResponseDto(member, imageUrl);
 	}
 }

@@ -11,5 +11,6 @@ public interface MemberMapper {
 	MemberMapper INSTANCE = org.mapstruct.factory.Mappers.getMapper(MemberMapper.class);
 
 	@Mapping(source = "member.id", target = "memberId")
-	MyAvatarResponseDto toMyAvatarResponseDto(Member member);
+	@Mapping(source = "avatarImageUrl", target = "avatarImageUrl")
+	MyAvatarResponseDto toMyAvatarResponseDto(Member member, String avatarImageUrl);
 }

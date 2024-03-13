@@ -33,4 +33,14 @@ public class PasswordMember {
 
 	@Column(nullable = false)
 	private String password;
+
+	public static PasswordMember of(
+			Member member, String username, String password
+	) {
+		PasswordMember passwordMember = new PasswordMember();
+		passwordMember.member = member;
+		passwordMember.username = username;
+		passwordMember.password = password;
+		return passwordMember;
+	}
 }

@@ -82,7 +82,9 @@ public class ExceptionController {
 	public ResponseEntity<ErrorResponse> handleMethodArgumentNotValid(
 			final MethodArgumentNotValidException exception) {
 		final BindingResult bindingResult = exception.getBindingResult();
-		String message = bindingResult.getAllErrors().get(0).getDefaultMessage();
+		String message = bindingResult.getAllErrors().stream()
+				.map(DefaultMessageSourceResolvable::getDefaultMessage)
+				.collect(Collectors.joining(" "));
 		final ErrorResponse errorResponse = new ErrorResponse();
 		errorResponse.setStatus(HttpStatus.BAD_REQUEST.value());
 		errorResponse.setReason(exception.getClass().getSimpleName());

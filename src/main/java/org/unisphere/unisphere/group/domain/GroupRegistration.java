@@ -1,6 +1,7 @@
 package org.unisphere.unisphere.group.domain;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
@@ -39,7 +40,22 @@ public class GroupRegistration {
 	@Column(nullable = true)
 	private LocalDateTime registeredAt;
 
-	public static GroupRegistration of(LocalDateTime now, Member ownerMember, Group group) {
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) {
+			return true;
+		}
+		if (o == null || getClass() != o.getClass()) {
+			return false;
+		}
+
+		GroupRegistration that = (GroupRegistration) o;
+
+		return Objects.equals(id, that.id);
+	}
+
+	public static GroupRegistration createOwnerRegistration(LocalDateTime now, Member ownerMember,
+			Group group) {
 		GroupRegistration groupRegistration = new GroupRegistration();
 		groupRegistration.id = new GroupRegistrationCompositeKey(ownerMember.getId(),
 				group.getId());
@@ -48,5 +64,45 @@ public class GroupRegistration {
 		groupRegistration.role = GroupRole.OWNER;
 		groupRegistration.registeredAt = now;
 		return groupRegistration;
+	}
+
+	public static GroupRegistration of(Member member, Group group, GroupRole role,
+			LocalDateTime now) {
+		GroupRegistration groupRegistration = new GroupRegistration();
+		groupRegistration.id = new GroupRegistrationCompositeKey(member.getId(),
+				group.getId());
+		groupRegistration.member = member;
+		groupRegistration.group = group;
+		groupRegistration.role = role;
+		groupRegistration.registeredAt = now;
+		return groupRegistration;
+	}
+
+	public void approveRegistration(LocalDateTime now) {
+		this.registeredAt = now;
+	}
+
+	public void appointAsAdmin() {
+		this.role = GroupRole.ADMIN;
+	}
+
+	public void appointAsOwner() {
+		this.role = GroupRole.OWNER;
+	}
+
+	public boolean isOwner() {
+		return this.role == GroupRole.OWNER;
+	}
+
+	public boolean isAdmin() {
+		return this.role == GroupRole.ADMIN;
+	}
+
+	public boolean isOwner(Member member) {
+		return this.member.equals(member) && this.role == GroupRole.OWNER;
+	}
+
+	public boolean isAdmin(Member member) {
+		return isOwner(member) || this.role == GroupRole.ADMIN;
 	}
 }

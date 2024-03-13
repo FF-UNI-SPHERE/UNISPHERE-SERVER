@@ -13,7 +13,7 @@ import org.unisphere.unisphere.log.LogLevel;
 
 @Component
 @Logging(level = LogLevel.DEBUG)
-public class AwsS3Manager {
+public class AwsS3Manager implements ObjectStorageManager {
 
 	private final String bucketName;
 	private final AmazonS3Client amazonS3Client;
@@ -25,6 +25,7 @@ public class AwsS3Manager {
 		this.bucketName = bucketName;
 	}
 
+	@Override
 	public void delete(String key) {
 		try {
 			amazonS3Client.deleteObject(bucketName, key);
@@ -33,6 +34,7 @@ public class AwsS3Manager {
 		}
 	}
 
+	@Override
 	public String getObjectUrl(String key) {
 		if (!doesObjectExist(key)) {
 			throw ExceptionStatus.NOT_FOUND_IMAGE.toDomainException();
@@ -40,11 +42,13 @@ public class AwsS3Manager {
 		return amazonS3Client.getUrl(bucketName, key).toString();
 	}
 
+	@Override
 	public String getPreSignedUrl(String objectKey) {
 		GeneratePresignedUrlRequest request = createPreSignedUrlRequest(objectKey);
 		return amazonS3Client.generatePresignedUrl(request).toString();
 	}
 
+	@Override
 	public boolean doesObjectExist(String objectKey) {
 		return amazonS3Client.doesObjectExist(bucketName, objectKey);
 	}

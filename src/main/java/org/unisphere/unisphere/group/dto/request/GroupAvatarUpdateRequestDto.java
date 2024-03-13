@@ -5,12 +5,14 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.ToString;
+import org.unisphere.unisphere.group.validation.AvatarUpdateValidation;
 
 @AllArgsConstructor
 @Getter
 @ToString
 @Builder
 @Schema(description = "그룹 아바타 정보 수정 요청")
+@AvatarUpdateValidation
 public class GroupAvatarUpdateRequestDto {
 
 	@Schema(description = "그룹명", example = "유니스피어", nullable = true)

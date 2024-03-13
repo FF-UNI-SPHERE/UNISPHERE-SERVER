@@ -64,6 +64,18 @@ public class Group {
 	@ManyToOne(optional = false, fetch = FetchType.LAZY)
 	private Member ownerMember;
 
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) {
+			return true;
+		}
+		if (o == null || getClass() != o.getClass()) {
+			return false;
+		}
+		Group group = (Group) o;
+		return getId().equals(group.getId());
+	}
+
 	public static Group createGroup(LocalDateTime now, Member member, String name, String summary,
 			String logoImageUrl) {
 		Group group = new Group();
@@ -74,5 +86,26 @@ public class Group {
 		group.approvedAt = null;
 		group.logoImageUrl = logoImageUrl;
 		return group;
+	}
+
+	public void updateAvatar(String name, String preSignedAvatarImageUrl) {
+		if (name != null && !name.isEmpty()) {
+			this.name = name;
+		}
+		if (preSignedAvatarImageUrl != null && !preSignedAvatarImageUrl.isEmpty()) {
+			this.avatarImageUrl = preSignedAvatarImageUrl;
+		}
+	}
+
+	public boolean isGroupOwner(Member member) {
+		return this.ownerMember.equals(member);
+	}
+
+	public void putHomePage(String preSignedLogoImageUrl, String content, String email,
+			String groupSiteUrl) {
+		this.logoImageUrl = preSignedLogoImageUrl;
+		this.content = content;
+		this.email = email;
+		this.groupSiteUrl = groupSiteUrl;
 	}
 }

@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.ToString;
+import lombok.experimental.FieldNameConstants;
 import org.unisphere.unisphere.group.dto.GroupMemberDto;
 
 @AllArgsConstructor
@@ -14,6 +15,7 @@ import org.unisphere.unisphere.group.dto.GroupMemberDto;
 @ToString
 @Builder
 @Schema(description = "단체에 속한 회원 목록 정보")
+@FieldNameConstants
 public class GroupMemberListResponseDto {
 
 	@ArraySchema(arraySchema = @Schema(description = "단체에 속한 회원 목록", implementation = GroupMemberDto.class))

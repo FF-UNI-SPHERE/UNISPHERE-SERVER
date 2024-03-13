@@ -5,12 +5,14 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.ToString;
+import lombok.experimental.FieldNameConstants;
 
 @AllArgsConstructor
 @Getter
 @ToString
 @Builder
 @Schema(description = "단체 홈피 조회 응답")
+@FieldNameConstants
 public class GroupHomePageResponseDto {
 
 	@Schema(description = "단체 ID", example = "1")

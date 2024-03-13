@@ -5,12 +5,14 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.ToString;
+import org.unisphere.unisphere.group.validation.GroupHomePageUpdateValidation;
 
 @AllArgsConstructor
 @Getter
 @ToString
 @Builder
 @Schema(description = "단체 홈페이지 수정 요청")
+@GroupHomePageUpdateValidation
 public class GroupHomePageUpdateRequestDto {
 
 	@Schema(description = "단체 로고 이미지 URL", example = "logo-images/random-string/logo-image.png", nullable = true)

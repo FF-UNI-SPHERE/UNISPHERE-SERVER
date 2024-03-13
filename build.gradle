@@ -50,23 +50,13 @@ dependencies {
 
     // Test
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.springframework.security:spring-security-test'
     testRuntimeOnly 'com.h2database:h2'
-}
-
-tasks.register('buildZip', Zip) {
-    from compileJava
-    from processResources
-    into('lib') {
-        from(configurations.runtimeClasspath) {
-            exclude 'tomcat-embed-*'
-        }
-    }
-}
-
-tasks.named('bootBuildImage') {
-    builder = 'paketobuildpacks/builder-jammy-base:latest'
+    testCompileOnly 'org.projectlombok:lombok'
+    testAnnotationProcessor 'org.projectlombok:lombok'
 }
 
 tasks.named('test') {
+    environment 'SPRING_PROFILES_ACTIVE', 'test'
     useJUnitPlatform()
 }
