@@ -27,6 +27,8 @@ import org.unisphere.unisphere.article.service.ArticleFacadeService;
 import org.unisphere.unisphere.auth.domain.MemberRole;
 import org.unisphere.unisphere.auth.dto.MemberSessionDto;
 
+import javax.validation.Valid;
+
 @RestController
 @RequiredArgsConstructor
 @Logging
@@ -47,8 +49,9 @@ public class ArticleController {
 	@Secured(MemberRole.S_USER)
 	public void submitArticleAsMember(
 			@LoginMemberInfo MemberSessionDto memberSessionDto,
-			@RequestBody ArticleSubmissionRequestDto articleSubmissionRequestDto
+			@Valid @RequestBody ArticleSubmissionRequestDto articleSubmissionRequestDto
 	) {
+		articleFacadeService.submitMemberArticle(memberSessionDto.getMemberId() , articleSubmissionRequestDto);
 	}
 
 	// 단체 이름으로 소식지 투고
@@ -65,6 +68,7 @@ public class ArticleController {
 			@PathVariable("groupId") Long groupId,
 			@RequestBody ArticleSubmissionRequestDto articleSubmissionRequestDto
 	) {
+		articleFacadeService.submitGroupArticle(memberSessionDto.getMemberId(),groupId, articleSubmissionRequestDto);
 	}
 
 	// 소식지 투고 승인

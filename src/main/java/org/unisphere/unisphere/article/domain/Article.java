@@ -29,7 +29,7 @@ public class Article {
 	private Long id;
 
 	@Column
-	private Long author_id;
+	private Long authorId;
 
 	@Column(nullable = false)
 	@Enumerated(EnumType.STRING)
@@ -56,4 +56,16 @@ public class Article {
 	@ToString.Exclude
 	@OneToMany(mappedBy = "article", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private List<InterestedArticle> interestedArticles = new ArrayList<>();
+
+
+	public static Article createArticle(String title, String content, String thumbnailImageUrl, AuthorType authorType, Long authorId){
+		Article article = new Article();
+		article.title = title;
+		article.content = content;
+		article.thumbnailImageUrl = thumbnailImageUrl;
+		article.createdAt = LocalDateTime.now();
+		article.authorType = authorType;
+		article.authorId = authorId;
+		return article;
+	}
 }
