@@ -73,12 +73,11 @@ public class Member {
 		if (this == o) {
 			return true;
 		}
-		if (o == null || getClass() != o.getClass()) {
+		if (!(o instanceof Member)) {
 			return false;
 		}
-
-		Member member = (Member) o;
-		return Objects.equals(id, member.id);
+		Member that = (Member) o;
+		return id != null && id.equals(that.getId());
 	}
 
 	public static Member of(

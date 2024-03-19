@@ -88,6 +88,7 @@ public class GroupRegistration {
 
 	public void appointAsOwner() {
 		this.role = GroupRole.OWNER;
+		this.group.changeOwner(this.member);
 	}
 
 	public boolean isOwner() {

@@ -169,7 +169,7 @@ public class GroupController {
 
 	// 단체 생성 승인
 	// PATCH /api/v1/groups/{groupId}/accept (pending)
-	@Operation(summary = "단체 생성 승인", description = "단체 생성을 승인합니다. 유니스피어 관리자만 호출 가능합니다.", deprecated = true)
+	@Operation(summary = "단체 생성 승인", description = "단체 생성을 승인합니다. 유니스피어 관리자만 호출 가능합니다. (pending)")
 	@ApiResponses(value = {
 			@ApiResponse(responseCode = "200", description = "ok"),
 	})
@@ -242,7 +242,7 @@ public class GroupController {
 				targetMemberId);
 	}
 
-	@Operation(summary = "단체 관리자 임명", description = "특정 회원을 단체 관리자로 임명합니다. 단체 소유자만 호출할 수 있습니다.")
+	@Operation(summary = "단체 관리자 임명", description = "특정 회원을 단체 관리자로 임명합니다. 단체 소유자만 호출할 수 있습니다.", deprecated = true)
 	@ApiResponses(value = {
 			@ApiResponse(responseCode = "200", description = "ok")
 	})
@@ -259,7 +259,8 @@ public class GroupController {
 
 	@Operation(
 			summary = "단체 소유자 위임",
-			description = "특정 단체의 소유자를 변경합니다. 단체 소유자만 호출할 수 있습니다."
+			description = "특정 단체의 소유자를 변경합니다. 단체 소유자만 호출할 수 있습니다.",
+			deprecated = true
 	)
 	@ApiResponses(value = {
 			@ApiResponse(responseCode = "200", description = "ok")

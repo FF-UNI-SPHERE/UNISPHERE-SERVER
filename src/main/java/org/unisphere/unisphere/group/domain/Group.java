@@ -57,7 +57,7 @@ public class Group {
 	private LocalDateTime approvedAt;
 
 	@ToString.Exclude
-	@OneToMany(mappedBy = "group", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "group", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<GroupRegistration> groupRegistrations = new ArrayList<>();
 
 	@JoinColumn(name = "ownerMemberId", nullable = false)
@@ -69,11 +69,11 @@ public class Group {
 		if (this == o) {
 			return true;
 		}
-		if (o == null || getClass() != o.getClass()) {
+		if (!(o instanceof Group)) {
 			return false;
 		}
 		Group group = (Group) o;
-		return getId().equals(group.getId());
+		return id != null && id.equals(group.id);
 	}
 
 	public static Group createGroup(LocalDateTime now, Member member, String name, String summary,
@@ -107,5 +107,9 @@ public class Group {
 		this.content = content;
 		this.email = email;
 		this.groupSiteUrl = groupSiteUrl;
+	}
+
+	public void changeOwner(Member newOwner) {
+		this.ownerMember = newOwner;
 	}
 }
